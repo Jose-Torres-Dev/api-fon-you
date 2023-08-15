@@ -1,0 +1,26 @@
+server:
+  port: 9090
+  servlet:
+    context-path: /prueba-tecnica
+  
+spring:
+  mvc:
+    problemdetails:
+      enabled: true
+  banner:
+    charset: UTF-8
+    location: classpath:extras/banner.txt
+  datasource:
+    url: ${spring.datasource.hikari.jdbc-url}
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      driver-class-name: org.postgresql.Driver
+      jdbc-url: jdbc:postgresql://localhost:5432/prueba-tecnica
+      username: postgres
+      password: 12345678
+      maximum-pool-size: 80
+      connection-timeout: 60000
+      
+
+examen:
+  puntuacion-total: 100.00

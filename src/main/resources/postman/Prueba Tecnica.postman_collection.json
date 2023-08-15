@@ -1,0 +1,291 @@
+{
+	"info": {
+		"_postman_id": "1f08ab75-7f38-4990-b006-22876e1e707e",
+		"name": "Prueba Tecnica",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3708010"
+	},
+	"item": [
+		{
+			"name": "1. Crear Examen",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const examen = JSON.parse(responseBody);\r",
+							"\r",
+							"console.info('Configurando el identificador del examen.');\r",
+							"pm.collectionVariables.set('ID_EXAMEN', `\"${examen.idExamen}\"`);\r",
+							"\r",
+							"examen.preguntasRegistradas.forEach((preguntaRegistrada, indice) => {\r",
+							"    console.info(`Configurando el identificador de la pregunta del examen ${indice}.`);\r",
+							"    pm.collectionVariables.set(`ID_PREGUNTA_${indice}`, `\"${preguntaRegistrada.idPreguntaRegistrada}\"`);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La peticion tiene un estatus 201 - Created\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La peticion tiene un json con un identificador de examen\", () => {\r",
+							"    pm.response.to.have.jsonBody(\"idExamen\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Examen de fisica y programacion\",\r\n    \"preguntas\": [\r\n        {\r\n            \"interrogante\": \"Que es la gravedad?\",\r\n            \"primeraOpcion\": \"Un tipo de energia\",\r\n            \"segundaOpcion\": \"Un fenómeno natural por el cual los objetos son atraídos entre sí.\",\r\n            \"terceraOpcion\": \"Un invento de la nasa\",\r\n            \"cuartaOpcion\": \"Un quimico peligroso\",\r\n            \"opcionCorrecta\": \"B\"\r\n        },\r\n        {\r\n            \"interrogante\": \"Que es un vector?\",\r\n            \"primeraOpcion\": \"un segmento de recta en el espacio que parte de un punto hacia otro.\",\r\n            \"segundaOpcion\": \"Una linea recta de una figura\",\r\n            \"terceraOpcion\": \"Un trazo\",\r\n            \"cuartaOpcion\": \"Java 17\",\r\n            \"opcionCorrecta\": \"A\"\r\n        },\r\n        {\r\n            \"interrogante\": \"Clausula para borrar un registro en base de datos\",\r\n            \"primeraOpcion\": \"insert\",\r\n            \"segundaOpcion\": \"delete\",\r\n            \"terceraOpcion\": \"update\",\r\n            \"cuartaOpcion\": \"where\",\r\n            \"opcionCorrecta\": \"B\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/prueba-tecnica/examenes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"prueba-tecnica",
+						"examenes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Registrar estudiante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const estudiante = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set('ID_ESTUDIANTE', `\"${estudiante.idEstudiante}\"`); \r",
+							"console.info('Seteando el identificador del estudiante.');\r",
+							"\r",
+							"\r",
+							"pm.test(\"La peticion tiene un estatus 201 - Created\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La peticion tiene un json con un identificador del estudiante.\", () => {\r",
+							"    pm.response.to.have.jsonBody(\"idEstudiante\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Mario Ortega\",\r\n    \"edad\": 21,\r\n    \"ciudad\": \"Mexico\",\r\n    \"zonaHoraria\": \"America/Mexico_City\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/prueba-tecnica/estudiantes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"prueba-tecnica",
+						"estudiantes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Asignar examen a estudiante",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"La peticion tiene un estatus 201 - Created\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La peticion tiene la fecha de presentacion del examen.\", () => {\r",
+							"    pm.response.to.have.jsonBody(\"fechaPresentacionExamen\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idExamen\": {{ID_EXAMEN}},\r\n    \"idEstudiante\": {{ID_ESTUDIANTE}},\r\n    \"fechaPresentacion\": \"2023-08-14T13:15:30\",\r\n    \"zonaHoraria\": \"America/Mexico_City\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/prueba-tecnica/examenes/asignaciones",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"prueba-tecnica",
+						"examenes",
+						"asignaciones"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Capturar respuestas examen",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"idExamen\": {{ID_EXAMEN}},\r\n        \"idEstudiante\": {{ID_ESTUDIANTE}},\r\n        \"idPregunta\": {{ID_PREGUNTA_0}},\r\n        \"respuesta\": \"B\"\r\n    },\r\n    {\r\n        \"idExamen\": {{ID_EXAMEN}},\r\n        \"idEstudiante\": {{ID_ESTUDIANTE}},\r\n        \"idPregunta\": {{ID_PREGUNTA_1}},\r\n        \"respuesta\": \"A\"\r\n    },\r\n    {\r\n        \"idExamen\": {{ID_EXAMEN}},\r\n        \"idEstudiante\": {{ID_ESTUDIANTE}},\r\n        \"idPregunta\": {{ID_PREGUNTA_2}},\r\n        \"respuesta\": \"B\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/prueba-tecnica/examenes/calificaciones-examen",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"prueba-tecnica",
+						"examenes",
+						"calificaciones-examen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Calificar examen",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const ID_EXAMEN = pm.collectionVariables.get('ID_EXAMEN');\r",
+							"pm.collectionVariables.set('EXAMEN', ID_EXAMEN.replaceAll('\"', ''));\r",
+							"\r",
+							"\r",
+							"const ID_ESTUDIANTE = pm.collectionVariables.get('ID_ESTUDIANTE');\r",
+							"pm.collectionVariables.set('ESTUDIANTE', ID_ESTUDIANTE.replaceAll('\"', ''));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/prueba-tecnica/examenes/calificaciones-examen-{{EXAMEN}}/estudiante-{{ESTUDIANTE}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"prueba-tecnica",
+						"examenes",
+						"calificaciones-examen-{{EXAMEN}}",
+						"estudiante-{{ESTUDIANTE}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ID_EXAMEN",
+			"value": ""
+		},
+		{
+			"key": "ID_PREGUNTA_0",
+			"value": ""
+		},
+		{
+			"key": "ID_PREGUNTA_1",
+			"value": ""
+		},
+		{
+			"key": "ID_PREGUNTA_2",
+			"value": ""
+		},
+		{
+			"key": "ID_ESTUDIANTE",
+			"value": ""
+		},
+		{
+			"key": "EXAMEN",
+			"value": ""
+		},
+		{
+			"key": "ESTUDIANTE",
+			"value": ""
+		}
+	]
+}
